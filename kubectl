@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-service
+  labels:
+    app: echo-service
+    group: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-service
+  template:
+    metadata:
+      labels:
+        app: echo-service
+        group: frontend
+    spec:
+      containers:
+        - name: wehavedevs
+          image: hcv06/wehavedev:1.0.0
+          ports:
+            - containerPort: 3001
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+              httpHeaders:
+              - name: Status Code
+                value: 200
+            initialDelaySeconds: 5
+            periodSeconds: 3
+      imagePullSecrets:
+        - name: regsecret
+EOF 

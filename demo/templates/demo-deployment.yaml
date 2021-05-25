@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-service
+  labels:
+    app: echo-service
+    group: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-service
+  template:
+    metadata:
+      labels:
+        app: echo-service
+        group: frontend
+    spec:
+      containers:
+        - name: wehavedevs
+          image:   {{ .Values.image.name }}
+          ports:
+            - containerPort: 3001
+          livenessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      imagePullSecrets:
+        - name: regsecret     
